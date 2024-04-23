@@ -6,10 +6,10 @@ https://github.com/zenoamaro/react-quill
 import React from 'react';
 import ReactDOM from 'react-dom';
 import isEqual from 'lodash/isEqual';
-import type DeltaStatic from 'quill-delta';
-import type { EmitterSource as Sources } from 'quill/core/emitter';
+import DeltaStatic from 'quill-delta';
 
 import Quill, {
+  EmitterSource,
   QuillOptions as QuillOptionsStatic,
   Range as RangeStatic,
 } from 'quill';
@@ -35,22 +35,22 @@ namespace ReactQuill {
     onChange?(
       value: string,
       delta: DeltaStatic,
-      source: Sources,
+      source: EmitterSource,
       editor: UnprivilegedEditor
     ): void;
     onChangeSelection?(
       selection: Range,
-      source: Sources,
+      source: EmitterSource,
       editor: UnprivilegedEditor
     ): void;
     onFocus?(
       selection: Range,
-      source: Sources,
+      source: EmitterSource,
       editor: UnprivilegedEditor
     ): void;
     onBlur?(
       previousSelection: Range,
-      source: Sources,
+      source: EmitterSource,
       editor: UnprivilegedEditor
     ): void;
     onKeyDown?: React.EventHandler<any>;
@@ -82,7 +82,6 @@ import Range = ReactQuill.Range;
 import QuillOptions = ReactQuill.QuillOptions;
 import ReactQuillProps = ReactQuill.ReactQuillProps;
 import UnprivilegedEditor = ReactQuill.UnprivilegedEditor;
-
 interface ReactQuillState {
   generation: number;
 }
@@ -492,7 +491,7 @@ class ReactQuill extends React.Component<ReactQuillProps, ReactQuillState> {
   onEditorChange = (
     eventName: 'text-change' | 'selection-change',
     rangeOrDelta: Range | DeltaStatic,
-    source: Sources
+    source: EmitterSource
   ) => {
     if (eventName === 'text-change') {
       this.onEditorChangeText?.(
@@ -513,7 +512,7 @@ class ReactQuill extends React.Component<ReactQuillProps, ReactQuillState> {
   onEditorChangeText(
     value: string,
     delta: DeltaStatic,
-    source: Sources,
+    source: EmitterSource,
     editor: UnprivilegedEditor
   ): void {
     if (!this.editor) return;
@@ -536,7 +535,7 @@ class ReactQuill extends React.Component<ReactQuillProps, ReactQuillState> {
 
   onEditorChangeSelection(
     nextSelection: RangeStatic,
-    source: Sources,
+    source: EmitterSource,
     editor: UnprivilegedEditor
   ): void {
     if (!this.editor) return;
